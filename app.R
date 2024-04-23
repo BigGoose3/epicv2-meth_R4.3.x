@@ -20,7 +20,7 @@ library(ggplot2)
 library(gridExtra)
 library(htmltools)
 
-options(shiny.maxRequestSize=150*1024^2) ## to get large zip files, should figure out how much I would want to process at once
+options(shiny.maxRequestSize=1000*1024^2) ## to get large zip files, should figure out how much I would want to process at once
 pal <- brewer.pal(8, "Dark2")
 
 ui <- fluidPage(
