@@ -183,7 +183,7 @@ server <- function(input, output, session) {
   # Process Data 
   observe({
     message("Processing Data..")
-    targets <- read.metharray.sheet(getwd(), pattern = "Sample_Sheet.csv")
+    targets <- read.metharray.sheet(getwd(), pattern = "Sample.*Sheet.*csv")
     rgSet <- read.metharray.exp(targets = targets)
     rgSet@annotation <- c(array = "IlluminaHumanMethylationEPICv2", annotation = "20a1.hg38")
     detP <<- detectionP(rgSet)
