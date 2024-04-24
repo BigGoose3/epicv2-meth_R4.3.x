@@ -423,10 +423,15 @@ server <- function(input, output, session) {
     },
     
     content = function(file){
+    if (input$gokegg %in% c("GO", "KEGG")) {
       req(gst())
-      write.table(gst(), file, sep=",")
+      write.table(gst(), file, sep = ",")
+    } else if (input$gokegg == "GSA") {
+      req(gsa())
+      write.table(gsa(), file, sep = ",")
     }
-  )
+  }
+    )
   
   #### Differentially Methylated Regions ####
   observe({
