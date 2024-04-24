@@ -378,9 +378,17 @@ server <- function(input, output, session) {
   
   gsa_coll <- reactive({
     req(input$uploadGSA)
-    load(input$uploadGSA$datapath)
-    loaded <- ls()
-    gsa_coll <- get(loaded[1])
+    gsa_coll <- tryCatch(
+      expr = {
+        load(input$uploadGSA$datapath)
+        loaded <- ls()
+        gsa_coll <- get(loaded[1])
+      },
+      error = function(e) {
+        message("Error loading data with load(). Trying alternative approach...")
+        gsa_coll <- readRDS(input$uploadGSA$datapath)
+      }
+    )
     return(gsa_coll)
   })
   
