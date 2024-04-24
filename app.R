@@ -617,12 +617,12 @@ server <- function(input, output, session) {
     message("Age Generated")
 
     age <- as.data.frame(age)
-    targets_sub <- targets[,c("Sample_Plate", "Sample_Group", "Pool_ID", "Sample_Name", "X")]
+    targets_sub <- targets[,c("Sample_Plate", "Sample_Group", "Pool_ID", "Sample_Name")]
     # Identify columns with non-NA values
     cols_with_vars <- colnames(targets_sub)[colSums(!is.na(targets_sub)) > 0]
     targets_subset <- targets_sub[, cols_with_vars]
     # Merge 'age' dataframe with the subset of 'targets' dataframe
-    age.df <<- merge(age, targets_subset, by.x = "id", by.y = "X", all.x = TRUE)
+    age.df <<- merge(age, targets_subset, by.x = "id", all.x = TRUE)
     
     output$DNAmAge <- renderPrint({
       return(age.df)
