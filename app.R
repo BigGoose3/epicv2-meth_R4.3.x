@@ -73,7 +73,6 @@ ui <- fluidPage(
                                        selected = "GO", inline = TRUE),
                           tags$h6("If select GSA, must upload desired gene set file on right"),
                           numericInput("topGO","Select Number of Top Pathways to Display", value = 10, min = 1, step = 1),
-,
                    column(width = 3,
                           tags$h5("Upload Gene Set File Here (for GSA)"),
                           fileInput("uploadGSA", NULL),
