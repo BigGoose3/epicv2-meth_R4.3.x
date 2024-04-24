@@ -192,6 +192,7 @@ server <- function(input, output, session) {
     targets$Sample_Group[missing_group] <- 1
     targets$Pool_ID <- gsub(" ", "_", targets$Pool_ID)
     targets$Sample_Group <- gsub(" ", "_", targets$Sample_Group)
+    targets$id <- paste(targets$Slide, targets$Array, sep = "_")
     
     #complete processing
     rgSet <- read.metharray.exp(targets = targets)
@@ -617,12 +618,12 @@ server <- function(input, output, session) {
     message("Age Generated")
 
     age <- as.data.frame(age)
-    targets_sub <- targets[,c("Sample_Plate", "Sample_Group", "Pool_ID", "Sample_Name")]
+    targets_sub <- targets[,c("Sample_Plate", "Sample_Group", "Pool_ID", "Sample_Name", "id")]
     # Identify columns with non-NA values
     cols_with_vars <- colnames(targets_sub)[colSums(!is.na(targets_sub)) > 0]
     targets_subset <- targets_sub[, cols_with_vars]
     # Merge 'age' dataframe with the subset of 'targets' dataframe
-    age.df <<- merge(age, targets_subset, by.x = "id", all.x = TRUE)
+    age.df <<- merge(age, targets_subset, by.x = "id", by.y = "id", all.x = TRUE)
     
     output$DNAmAge <- renderPrint({
       return(age.df)
