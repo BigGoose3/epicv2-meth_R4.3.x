@@ -184,6 +184,16 @@ server <- function(input, output, session) {
   observe({
     message("Processing Data..")
     targets <- read.metharray.sheet(getwd(), pattern = "Sample.*Sheet.*csv")
+        
+    # edit incomplete sample sheets
+    missing_pool <- is.na(targets$Pool_ID)
+    missing_group <- is.na(targets$Sample_Group)
+    targets$Pool_ID[missing_pool] <- 1
+    targets$Sample_Group[missing_group] <- 1
+    targets$Pool_ID <- gsub(" ", "_", targets$Pool_ID)
+    targets$Sample_Group <- gsub(" ", "_", targets$Sample_Group)
+    
+    #complete processing
     rgSet <- read.metharray.exp(targets = targets)
     rgSet@annotation <- c(array = "IlluminaHumanMethylationEPICv2", annotation = "20a1.hg38")
     detP <<- detectionP(rgSet)
@@ -607,8 +617,13 @@ server <- function(input, output, session) {
     message("Age Generated")
 
     age <- as.data.frame(age)
-    age.df <<- merge(age, targets[,c("Sample_Plate", "Sample_Group", "Pool_ID", "Sample_Name", "X")], 
-                  by.x = "id", by.y = "X", all.x = TRUE)
+    targets_sub <- targets[,c("Sample_Plate", "Sample_Group", "Pool_ID", "Sample_Name", "X")]
+    # Identify columns with non-NA values
+    cols_with_vars <- colnames(targets_sub)[colSums(!is.na(targets_sub)) > 0]
+    targets_subset <- targets_sub[, cols_with_vars]
+    # Merge 'age' dataframe with the subset of 'targets' dataframe
+    age.df <<- merge(age, targets_subset, by.x = "id", by.y = "X", all.x = TRUE)
+    
     output$DNAmAge <- renderPrint({
       return(age.df)
     })
