@@ -2,11 +2,12 @@
 ## Dependencies ## 
 
 # List of CRAN packages
-cran_packages <- c("DMRcate", "yaml", "limma", "missMethyl", "Gviz", "minfi", "RColorBrewer", "matrixStats",
-                      "minfiData", "stringr", "purrr", "methylclock", "ggplot2", "gridExtra", "htmltools") 
+cran_packages <- c("yaml", "limma",  "Gviz", "RColorBrewer", "matrixStats",
+                      "stringr", "purrr",  "ggplot2", "gridExtra", "htmltools") 
 
 # List of Bioconductor packages
-bioc_packages <- c("IlluminaHumanMethylationEPICv2manifest", "IlluminaHumanMethylationEPICv2anno.20a1.hg38")
+bioc_packages <- c("methylclock", "minfiData", "minfi", "missMethyl", "DMRcate",
+                   "IlluminaHumanMethylationEPICv2manifest", "IlluminaHumanMethylationEPICv2anno.20a1.hg38")
 
 # Function to check and install missing CRAN packages
 install_if_missing <- function(packages) {
