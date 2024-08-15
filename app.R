@@ -1,24 +1,33 @@
 
 ## Dependencies ## 
 
-# List of required packages
-required_packages <- c("IlluminaHumanMethylationEPICv2manifest", "IlluminaHumanMethylationEPICv2anno.20a1.hg38",
-                       "DMRcate", "yaml", "limma", "missMethyl", "Gviz", "minfi", "RColorBrewer", "matrixStats",
-                      "minfiData", "stringr", "purrr", "methylclock", "ggplot2", "gridExtra", "htmltools")  # Replace with the actual packages you need
+# List of CRAN packages
+cran_packages <- c("DMRcate", "yaml", "limma", "missMethyl", "Gviz", "minfi", "RColorBrewer", "matrixStats",
+                      "minfiData", "stringr", "purrr", "methylclock", "ggplot2", "gridExtra", "htmltools") 
 
-# Function to check and install missing packages
+# List of Bioconductor packages
+bioc_packages <- c("IlluminaHumanMethylationEPICv2manifest", "IlluminaHumanMethylationEPICv2anno.20a1.hg38")
+
+# Function to check and install missing CRAN packages
 install_if_missing <- function(packages) {
   new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]
   if(length(new_packages)) install.packages(new_packages)
 }
 
+# Function to check and install missing Bioconductor packages
+install_bioc_if_missing <- function(packages) {
+  if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+  new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]
+  if(length(new_packages)) BiocManager::install(new_packages)
+}
+
 # Install missing packages
-install_if_missing(required_packages)
+install_if_missing(cran_packages)
+install_bioc_if_missing(bioc_packages)
 
 # Load the required packages
-lapply(required_packages, library, character.only = TRUE)
+lapply(c(cran_packages, bioc_packages), library, character.only = TRUE)
 
-# The rest of your Shiny app code follows
 #install.packages("shiny")
 library(shiny)
 library(IlluminaHumanMethylationEPICv2manifest)
