@@ -6,7 +6,7 @@ cran_packages <- c("yaml", "limma",  "Gviz", "RColorBrewer", "matrixStats",
                       "stringr", "purrr",  "ggplot2", "gridExtra", "htmltools") 
 
 # List of Bioconductor packages
-bioc_packages <- c("methylclock", "minfiData", "minfi", "missMethyl", "DMRcate",
+bioc_packages <- c("methylclock", "minfiData", "minfi", "missMethyl", "DMRcate", "DMRcatedata",
                    "IlluminaHumanMethylationEPICv2manifest", "IlluminaHumanMethylationEPICv2anno.20a1.hg38")
 
 # Function to check and install missing CRAN packages
@@ -34,6 +34,7 @@ library(shiny)
 library(IlluminaHumanMethylationEPICv2manifest)
 library(IlluminaHumanMethylationEPICv2anno.20a1.hg38)
 library(DMRcate)
+library(DMRcatedata)
 library(yaml)
 library(limma)
 library(missMethyl)
@@ -497,12 +498,18 @@ server <- function(input, output, session) {
     contMatrix <- makeContrasts(contrasts=combos_dmr(),
                                 levels=design())
     message("Matrix Generated")
+
+    ALLMs.noSNPs <- rmSNPandCH(mVals(), rmcrosshyb = FALSE)
+    ALLMs.noSNPs.repmean <- rmPosReps(ALLMs.noSNPs, filter.strategy="mean")
+    message("M Values Filtered")
     
     # Generate Annotation
     message("Generating DMRs")
-    myAnnotation <- cpg.annotate("array", mSetSq(), design = design(), 
+    myAnnotation <- cpg.annotate("array", object = ALLMs.noSNPs.repmean, what = c("M"), 
+                                 arraytype = "EPICv2", epicv2Remap = TRUE, 
+                                 analysis.type = "differential", design = design(),
                                  contrasts = TRUE, cont.matrix = contMatrix, 
-                                 coef = input$dmr_num_comp, fdr = 0.05) 
+                                 coef = input$dmr_num_comp, fdr = 0.01) 
     DMRs <<- dmrcate(myAnnotation, lambda = 1000, C = 2)
     results.ranges <<- extractRanges(DMRs, genome = "hg38")
     results.ranges.df <<- as(results.ranges, "data.frame")
