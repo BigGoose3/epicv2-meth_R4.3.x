@@ -494,7 +494,7 @@ server <- function(input, output, session) {
     message("Organizing Metadata for DMRs")
 
     # Prepare Comparisons to be made from Checkbox
-    contMatrix <<- makeContrasts(contrasts=combos_dmr(),
+    contMatrix <- makeContrasts(contrasts=combos_dmr(),
                                 levels=design())
     message("Matrix Generated")
     
