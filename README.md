@@ -3,6 +3,8 @@ My attempt on creating a methylation pipeline that is fully compatible with the 
 
 **NOTE: Still in Progress**
 
+**May take longer the first time running app in order to download necessary packages** 
+
 **Can access using:**
 
 library(shiny)
