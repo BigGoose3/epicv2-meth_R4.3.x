@@ -1,4 +1,4 @@
-# epicv2-meth
+# epicv2-meth for R version 4.3.3 or earlier. 
 My attempt on creating a methylation pipeline that is fully compatible with the Illumina Methylation EPICv2 Array. 
 
 **NOTE: Still in Progress**
@@ -9,7 +9,7 @@ My attempt on creating a methylation pipeline that is fully compatible with the 
 
 library(shiny)
 
-runGitHub(repo = "epicv2-meth", username = "BigGoose3", ref = "main")
+runGitHub(repo = "epicv2-meth", username = "BigGoose3", ref = "v4.3.x")
 
 **Based on pipeline:**
 https://dockflow.org/workflow/methylation-array-analysis/#customising-visualisations-of-methylation-data
